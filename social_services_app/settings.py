@@ -17,7 +17,7 @@ SECRET_KEY = env('SECRET_KEY', default='unsafe-default-key')
 # ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")
 # ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1],https://wily-karlotta-lone-coder-lab-5c4265ec.koyeb.app").split(",")
 
 CORS_ALLOW_ALL_ORIGINS = False
 
