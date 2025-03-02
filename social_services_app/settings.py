@@ -15,8 +15,27 @@ DEBUG = env.bool('DEBUG', default=False)
 SECRET_KEY = env('SECRET_KEY', default='unsafe-default-key')
 # ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost'])
 # ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")
-# ALLOWED_HOSTS=['localhost']
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+# ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+ALLOWED_HOSTS = ['*']
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://192.168.7.199:3000",
+    "https://c02e-109-81-86-177.ngrok-free.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://c02e-109-81-86-177.ngrok-free.app",
+    "http://localhost:3000",
+    "http://192.168.7.199:3000",
+    # případně další domény...
+]
 
 
 # Application definition
@@ -29,13 +48,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',  # Add Django REST Framework
+    'corsheaders',
     'clients',
     'employees',
     'visits',
     'attendance',
+    'frontend',
+    'users',  # Add the users app
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,8 +73,8 @@ ROOT_URLCONF = 'social_services_app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / 'templates'], # Původně
+        'APP_DIRS': True, # Toto povoluje hledání templates uvnitř aplikací
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -118,7 +141,13 @@ STATIC_URL = '/static/'
 # Add this line:
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/clients/'  # Kam přesměrovat po přihlášení
+LOGOUT_REDIRECT_URL = '/' # Kam přesměrovat po odhlášení

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Edit Visit</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      {% load static %}
+    <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add/Edit Visit</h1>
+        <form id="visit-form">
+            {% csrf_token %} 
+            <input type="hidden" id="visit-id" name="id">
+
+            <div class="form-group">
+                <label for="client">Client:</label>
+                <select class="form-control" id="client" name="client" required>
+                    <option value="">Select a client</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="employee">Employee:</label>
+                <select class="form-control" id="employee" name="employee" required>
+                    <option value="">Select an employee</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="planned_start_time">Planned Start Time:</label>
+                <input type="datetime-local" class="form-control" id="planned_start_time" name="planned_start_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="planned_end_time">Planned End Time:</label>
+                <input type="datetime-local" class="form-control" id="planned_end_time" name="planned_end_time" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <a href="{% url 'visits' %}" class="btn btn-success">Back</a>
+        <div id="error-message" style="color: red;"></div>
+    </div>
+    {% load static %}
+    <script src="{% static 'frontend/js/add_visit.js' %}"></script>
+</body>
+</html>

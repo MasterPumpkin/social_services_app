@@ -1,0 +1,65 @@
+const form = document.getElementById('employee-form');
+const employeeId = new URLSearchParams(window.location.search).get('id');
+
+function loadEmployeeData(id) {
+    fetch(`/api/employees/${id}/`)
+        .then(response => response.json())
+        .then(employee => {
+            document.getElementById('employee-id').value = employee.id;
+            document.getElementById('first_name').value = employee.first_name;
+            document.getElementById('last_name').value = employee.last_name;
+            document.getElementById('phone').value = employee.phone;
+            document.getElementById('username').value = employee.username;
+            document.getElementById('availability').value = employee.availability;
+        });
+}
+
+if (employeeId) {
+    loadEmployeeData(employeeId);
+}
+
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const employeeData = {
+        id: document.getElementById('employee-id').value,
+        first_name: document.getElementById('first_name').value,
+        last_name: document.getElementById('last_name').value,
+        phone: document.getElementById('phone').value,
+        username: document.getElementById('username').value,
+        availability: document.getElementById('availability').value,
+        qualification: "Standard",
+        // Only send password if creating a new employee:
+        ...(employeeId ? {} : {password: document.getElementById('password').value})
+    };
+
+
+    const method = employeeId ? 'PUT' : 'POST';
+    const url = employeeId ? `/api/employees/${employeeId}/` : '/api/employees/';
+
+    fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employeeData),
+    })
+    .then(response => {
+        if (response.ok) {
+            response.json().then(data => { // Získání dat z odpovědi
+                localStorage.setItem('employeeId', data.id); // Uložíme ID do localStorage
+                window.location.href = '/employees/';
+            })
+
+        } else {
+          return response.json().then(data => {
+                throw new Error(JSON.stringify(data));
+           });
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+         document.getElementById('error-message').textContent = 'Error: viz konzole ' + error;
+    });
+});
+
