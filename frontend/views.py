@@ -2,9 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required  # Import the decorator
 from rest_framework import viewsets
 
-
-# def index(request):
-#     return redirect('admin:index')  # Redirect to the admin page
+def home(request):
+    return render(request, 'home.html')
 
 @login_required  # Apply the decorator to all relevant views
 def clients(request):
